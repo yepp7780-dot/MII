@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MII</title>
+  <style>
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: url('cat.gif') no-repeat center center fixed;
+      background-size: cover;
+    }
+
+    .container {
+      text-align: center;
+      background-color: rgba(255, 255, 255, 0.8);
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+      width: 300px;
+    }
+
+    h1 {
+      color: #ff5e78;
+    }
+
+    .heart {
+      font-size: 50px;
+      color: #ff5e78;
+      transition: transform 0.2s;
+      cursor: pointer;
+    }
+
+    .heart:hover {
+      transform: scale(1.2);
+    }
+
+    .message {
+      font-size: 18px;
+      color: #555;
+      display: none;
+      margin-top: 15px;
+    }
+
+    .btn {
+      background-color: #ff5e78;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 5px;
+      margin-top: 15px;
+      transition: background-color 0.3s;
+    }
+
+    .btn:hover {
+      background-color: #ff334d;
+    }
+
+    .volume-control {
+      display: flex;
+      justify-content: center;
+      margin-top: 10px;
+    }
+
+    .volume-btn {
+      background-color: #ff5e78;
+      color: #fff;
+      border: none;
+      padding: 8px 15px;
+      font-size: 14px;
+      cursor: pointer;
+      border-radius: 5px;
+      margin: 0 5px;
+      transition: background-color 0.3s;
+    }
+
+    .volume-btn:hover {
+      background-color: #ff334d;
+    }
+
+    /* ปรับสไตล์สำหรับ popup รูปภาพไม่มีพื้นหลัง */
+    .popup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 10;
+    }
+
+    .popup img {
+      width: 500px;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>มีหมาเด็กอ่ะยังง
+    </h1>
+    <div class="heart">❤️</div>
+    <div class="message" id="loveMessage">อ่ะแหนะะะ</div>
+    <button class="btn" onclick="showPopup()">กดเพื่อหอมแก้ม</button>
+    
+    <!-- ปุ่มควบคุมระดับเสียง -->
+    <div class="volume-control">
+      <button class="volume-btn" onclick="decreaseVolume()">- ลดเสียง</button>
+      <button class="volume-btn" onclick="increaseVolume()">+ เพิ่มเสียง</button>
+    </div>
+  </div>
+
+  <!-- ใส่เพลง -->
+  <audio id="bgMusic" src="music.mp3"></audio>
+
+  <!-- รูป popup ที่จะปรากฏกลางหน้าจอ (ควรเป็นไฟล์ PNG ที่ไม่มีพื้นหลัง) -->
+  <div class="popup" id="popupImage">
+    <img src="cute.gif" alt="เซอร์ไพรส์!">
+  </div>
+
+  <script>
+    const heart = document.querySelector('.heart');
+    const message = document.getElementById('loveMessage');
+    const music = document.getElementById('bgMusic');
+    const popupImage = document.getElementById('popupImage');
+
+    heart.addEventListener('click', () => {
+      heart.classList.toggle('animate');
+      if (message.style.display === "none") {
+        message.style.display = "block";
+        music.play(); // เล่นเพลงเมื่อคลิกหัวใจ
+      } else {
+        message.style.display = "none";
+        music.pause(); // หยุดเพลงเมื่อคลิกอีกครั้ง
+      }
+    });
+
+    function playMusic() {
+      message.style.display = "block";
+      music.play(); // เล่นเพลงเมื่อคลิกปุ่ม "เปิดเพลงพร้อมข้อความ"
+    }
+
+    function decreaseVolume() {
+      if (music.volume > 0) {
+        music.volume = Math.max(0, music.volume - 0.1); // ลดเสียงทีละ 0.1
+      }
+    }
+
+    function increaseVolume() {
+      if (music.volume < 1) {
+        music.volume = Math.min(1, music.volume + 0.1); // เพิ่มเสียงทีละ 0.1
+      }
+    }
+
+    // ฟังก์ชันแสดง popup และซ่อนหลัง 5 วินาที
+    function showPopup() {
+      popupImage.style.display = 'block'; // แสดงรูป popup ทันทีที่กดปุ่ม
+      playMusic(); // เล่นเพลงด้วย
+      message.style.display = "block"; // แสดงข้อความบอกรัก
+      setTimeout(() => {
+        popupImage.style.display = 'none'; // ซ่อนรูป popup หลัง 5 วินาที
+      }, 5000);
+    }
+  </script>
+</body>
+</html>
